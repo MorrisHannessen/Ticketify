@@ -2,7 +2,7 @@
 FROM elixir:1.15-alpine AS build
 
 # Install build dependencies
-RUN apk add --no-cache build-base npm git python3
+RUN apk add --no-cache build-base git
 
 # Create app directory
 WORKDIR /app
@@ -18,10 +18,6 @@ RUN mix local.hex --force && \
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only prod
 
-# Copy assets
-COPY assets/package*.json assets/
-RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
-
 # Copy source code
 COPY priv priv
 COPY lib lib
@@ -29,12 +25,10 @@ COPY assets assets
 COPY config config
 
 # Compile assets and app
-RUN npm run --prefix ./assets deploy
-RUN mix phx.digest
+RUN mix assets.deploy
 RUN mix compile
 
 # Build release
-COPY rel rel
 RUN mix release
 
 # Start a new build stage for the runtime image

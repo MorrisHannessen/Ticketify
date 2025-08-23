@@ -35,7 +35,8 @@ defmodule Ticketify.Application do
   end
 
   defp skip_migrations?() do
-    # By default, sqlite migrations are run when using a release
+    # Run migrations only when running a release (RELEASE_NAME is set by mix release)
+    # Skip migrations in dev/test where the dev.exs config handles it differently
     System.get_env("RELEASE_NAME") == nil
   end
 end
