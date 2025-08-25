@@ -10,8 +10,6 @@ defmodule Ticketify.Application do
     children = [
       TicketifyWeb.Telemetry,
       Ticketify.Repo,
-      {Ecto.Migrator,
-       repos: Application.fetch_env!(:ticketify, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:ticketify, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Ticketify.PubSub},
       # Start a worker by calling: Ticketify.Worker.start_link(arg)
@@ -32,11 +30,5 @@ defmodule Ticketify.Application do
   def config_change(changed, _new, removed) do
     TicketifyWeb.Endpoint.config_change(changed, removed)
     :ok
-  end
-
-  defp skip_migrations?() do
-    # Run migrations only when running a release (RELEASE_NAME is set by mix release)
-    # Skip migrations in dev/test where the dev.exs config handles it differently
-    System.get_env("RELEASE_NAME") == nil
   end
 end

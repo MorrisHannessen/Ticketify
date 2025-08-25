@@ -2,10 +2,13 @@ import Config
 
 # Configure your database
 config :ticketify, Ticketify.Repo,
-  database: Path.expand("../ticketify_dev.db", __DIR__),
-  pool_size: 5,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "ticketify_dev",
   stacktrace: true,
-  show_sensitive_data_on_connection_error: true
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -20,7 +23,7 @@ config :ticketify, TicketifyWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "UexGO8RDiHAo8tOCf/+ZWk5hzsPGF99LeROdXuXKo0+ChtSCoKT3eGsBNijv1sk6",
+  secret_key_base: "9b3kjtXyAmF45dOtQjoqEJeVa/S1z3YFo2iee2Rn6H2AzGlckIBiHdPq8O4ikjBV",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:ticketify, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:ticketify, ~w(--watch)]}

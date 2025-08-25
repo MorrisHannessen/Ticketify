@@ -7,7 +7,7 @@ defmodule TicketifyWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_ticketify_key",
-    signing_salt: "tpv8+sP3",
+    signing_salt: "aLdaQ2I9",
     same_site: "Lax"
   ]
 

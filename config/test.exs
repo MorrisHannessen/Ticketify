@@ -6,15 +6,18 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :ticketify, Ticketify.Repo,
-  database: Path.expand("../ticketify_test.db", __DIR__),
-  pool_size: 5,
-  pool: Ecto.Adapters.SQL.Sandbox
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "ticketify_test#{System.get_env("MIX_TEST_PARTITION")}",
+  pool: Ecto.Adapters.SQL.Sandbox,
+  pool_size: System.schedulers_online() * 2
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :ticketify, TicketifyWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "fq0mTCYrDnD5rlz3E08Uz9MJ02ASlwzgpToOuekff7IQX3NnEYkI65+ZTABfxxdb",
+  secret_key_base: "vD+SetMH4AmkIbZOrmhIZL7oGQw2Z27+VpOU61ckP4rmsH1vEtQ3XLHrCDjk/QWS",
   server: false
 
 # In test we don't send emails

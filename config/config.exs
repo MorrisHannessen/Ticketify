@@ -20,7 +20,7 @@ config :ticketify, TicketifyWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Ticketify.PubSub,
-  live_view: [signing_salt: "x/33I/5V"]
+  live_view: [signing_salt: "ZEqpZOBU"]
 
 # Configures the mailer
 #
