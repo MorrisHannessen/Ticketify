@@ -28,9 +28,13 @@ services:
       - DATABASE_URL=ecto://postgres:postgres@db:5432/ticketify_dev
       - PHX_HOST=0.0.0.0
     volumes:
+      # Mount the entire project for hot reloading
       - .:/app
-      - /app/deps
-      - /app/_build
+      # Use named volumes for dependencies and build artifacts to avoid permission issues
+      - deps_cache:/app/deps
+      - build_cache:/app/_build
+      # Mount node_modules separately to avoid conflicts
+      - node_modules_cache:/app/assets/node_modules
     command: >
       sh -c "
         mix deps.get &&
@@ -41,3 +45,6 @@ services:
 
 volumes:
   postgres_data:
+  deps_cache:
+  build_cache:
+  node_modules_cache:
