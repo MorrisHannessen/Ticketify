@@ -1,4 +1,10 @@
 defmodule Ticketify.Orders.Order do
+  @moduledoc """
+  Order schema representing ticket purchase transactions.
+
+  Orders contain customer information and are associated with
+  multiple tickets for a specific event.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -22,8 +28,20 @@ defmodule Ticketify.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:total_amount, :status, :customer_email, :customer_first_name, :customer_last_name, :customer_phone])
-    |> validate_required([:total_amount, :customer_email, :customer_first_name, :customer_last_name])
+    |> cast(attrs, [
+      :total_amount,
+      :status,
+      :customer_email,
+      :customer_first_name,
+      :customer_last_name,
+      :customer_phone
+    ])
+    |> validate_required([
+      :total_amount,
+      :customer_email,
+      :customer_first_name,
+      :customer_last_name
+    ])
     |> validate_inclusion(:status, @statuses)
     |> validate_number(:total_amount, greater_than: 0)
     |> validate_format(:customer_email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/)
@@ -64,7 +82,10 @@ defmodule Ticketify.Orders.Order do
   @doc """
   Returns customer's full name
   """
-  def customer_full_name(%__MODULE__{customer_first_name: first_name, customer_last_name: last_name}) do
+  def customer_full_name(%__MODULE__{
+        customer_first_name: first_name,
+        customer_last_name: last_name
+      }) do
     "#{first_name} #{last_name}"
   end
 
@@ -86,5 +107,6 @@ defmodule Ticketify.Orders.Order do
   def order_number(%__MODULE__{id: id}) when is_integer(id) do
     "TIX-#{String.pad_leading(Integer.to_string(id), 6, "0")}"
   end
+
   def order_number(_), do: nil
 end

@@ -1,4 +1,10 @@
 defmodule Ticketify.Users.User do
+  @moduledoc """
+  User schema for tenant administrators and managers.
+
+  Users are scoped to tenants and represent the people who manage
+  events and ticket sales for a specific organization.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -40,8 +46,12 @@ defmodule Ticketify.Users.User do
     |> cast(attrs, [:password])
     |> validate_required([:password])
     |> validate_length(:password, min: 8, max: 100)
-    |> validate_format(:password, ~r/[A-Z]/, message: "must contain at least one uppercase letter")
-    |> validate_format(:password, ~r/[a-z]/, message: "must contain at least one lowercase letter")
+    |> validate_format(:password, ~r/[A-Z]/,
+      message: "must contain at least one uppercase letter"
+    )
+    |> validate_format(:password, ~r/[a-z]/,
+      message: "must contain at least one lowercase letter"
+    )
     |> validate_format(:password, ~r/[0-9]/, message: "must contain at least one number")
     |> hash_password()
   end

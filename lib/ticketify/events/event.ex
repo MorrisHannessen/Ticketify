@@ -1,4 +1,10 @@
 defmodule Ticketify.Events.Event do
+  @moduledoc """
+  Event schema representing festivals and events.
+
+  Events belong to tenants and contain ticket types, capacity limits,
+  and scheduling information.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -26,8 +32,26 @@ defmodule Ticketify.Events.Event do
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:name, :description, :venue, :address, :start_date, :end_date, :capacity, :status, :image_url])
-    |> validate_required([:name, :description, :venue, :address, :start_date, :end_date, :capacity])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :venue,
+      :address,
+      :start_date,
+      :end_date,
+      :capacity,
+      :status,
+      :image_url
+    ])
+    |> validate_required([
+      :name,
+      :description,
+      :venue,
+      :address,
+      :start_date,
+      :end_date,
+      :capacity
+    ])
     |> validate_inclusion(:status, @statuses)
     |> validate_number(:capacity, greater_than: 0)
     |> validate_dates()
@@ -53,7 +77,9 @@ defmodule Ticketify.Events.Event do
 
   defp generate_slug(changeset) do
     case get_change(changeset, :name) do
-      nil -> changeset
+      nil ->
+        changeset
+
       name ->
         slug =
           name
@@ -85,5 +111,6 @@ defmodule Ticketify.Events.Event do
     now = NaiveDateTime.utc_now()
     NaiveDateTime.compare(now, start_date) != :lt && NaiveDateTime.compare(now, end_date) == :lt
   end
+
   def active?(_), do: false
 end

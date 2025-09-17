@@ -65,7 +65,8 @@ defmodule Ticketify.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -89,8 +90,23 @@ defmodule Ticketify.MixProject do
         "phx.digest"
       ],
       # CI/Quality aliases
-      quality: ["format --check-formatted", "deps.unlock --check-unused", "compile --warnings-as-errors", "credo --strict", "sobelow", "dialyzer"],
-      "quality.ci": ["format --check-formatted", "deps.unlock --check-unused", "compile --warnings-as-errors", "credo --strict", "sobelow --exit", "dialyzer", "test"],
+      quality: [
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "compile --warnings-as-errors",
+        "credo --strict",
+        "sobelow",
+        "dialyzer"
+      ],
+      "quality.ci": [
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "compile --warnings-as-errors",
+        "credo --strict",
+        "sobelow --exit",
+        "dialyzer",
+        "test"
+      ],
       "quality.fix": ["format", "deps.clean --unused", "deps.get"]
     ]
   end

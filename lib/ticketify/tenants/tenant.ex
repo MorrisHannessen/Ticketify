@@ -1,4 +1,10 @@
 defmodule Ticketify.Tenants.Tenant do
+  @moduledoc """
+  Tenant schema for multi-tenant festival organizations.
+
+  Each tenant represents a separate festival organization with
+  complete data isolation and their own subdomain.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -26,10 +32,22 @@ defmodule Ticketify.Tenants.Tenant do
   @doc false
   def changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:name, :subdomain, :description, :email, :phone, :address, :logo_url, :status, :settings])
+    |> cast(attrs, [
+      :name,
+      :subdomain,
+      :description,
+      :email,
+      :phone,
+      :address,
+      :logo_url,
+      :status,
+      :settings
+    ])
     |> validate_required([:name, :subdomain, :description, :email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/)
-    |> validate_format(:subdomain, ~r/^[a-z0-9][a-z0-9-]*[a-z0-9]$/, message: "must contain only lowercase letters, numbers, and hyphens")
+    |> validate_format(:subdomain, ~r/^[a-z0-9][a-z0-9-]*[a-z0-9]$/,
+      message: "must contain only lowercase letters, numbers, and hyphens"
+    )
     |> validate_length(:subdomain, min: 3, max: 30)
     |> validate_length(:name, min: 2, max: 100)
     |> validate_inclusion(:status, @statuses)

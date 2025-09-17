@@ -29,6 +29,10 @@ RUN mix assets.deploy
 # Copy application code
 COPY lib lib
 
+# Copy scripts and make them executable
+COPY bin bin
+RUN chmod +x bin/*.sh bin/*.ps1
+
 # Compile the application
 RUN mix compile
 

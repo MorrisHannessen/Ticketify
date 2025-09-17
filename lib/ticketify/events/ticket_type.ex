@@ -1,4 +1,10 @@
 defmodule Ticketify.Events.TicketType do
+  @moduledoc """
+  TicketType schema representing different categories of tickets for an event.
+
+  Each event can have multiple ticket types with different prices,
+  capacities, and availability periods.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

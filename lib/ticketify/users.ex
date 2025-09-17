@@ -6,8 +6,8 @@ defmodule Ticketify.Users do
   import Ecto.Query, warn: false
   alias Ticketify.Repo
 
-  alias Ticketify.Users.User
   alias Ticketify.Tenants.Tenant
+  alias Ticketify.Users.User
 
   @doc """
   Returns the list of users for a tenant.

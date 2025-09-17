@@ -6,11 +6,11 @@ defmodule Ticketify.Orders do
   import Ecto.Query, warn: false
   alias Ticketify.Repo
 
-  alias Ticketify.Orders.Order
-  alias Ticketify.Tickets.Ticket
   alias Ticketify.Customers.Customer
-  alias Ticketify.Tenants.Tenant
   alias Ticketify.Events
+  alias Ticketify.Orders.Order
+  alias Ticketify.Tenants.Tenant
+  alias Ticketify.Tickets.Ticket
 
   @doc """
   Returns the list of orders for a tenant.
@@ -96,7 +96,11 @@ defmodule Ticketify.Orders do
       # Calculate total amount and validate ticket availability
       {total_amount, ticket_types} =
         ticket_items
-        |> Enum.reduce({Decimal.new(0), []}, fn %{ticket_type_id: ticket_type_id, quantity: quantity}, {total, types} ->
+        |> Enum.reduce({Decimal.new(0), []}, fn %{
+                                                  ticket_type_id: ticket_type_id,
+                                                  quantity: quantity
+                                                },
+                                                {total, types} ->
           ticket_type = Events.get_ticket_type!(ticket_type_id)
 
           if ticket_type.available >= quantity do
@@ -114,31 +118,38 @@ defmodule Ticketify.Orders do
            |> Order.create_changeset(order_attrs)
            |> Repo.insert() do
         {:ok, order} ->
-          # Reserve tickets and create ticket records
-          Enum.each(ticket_types, fn {ticket_type, quantity} ->
-            # Reserve the tickets
-            case Events.reserve_tickets(ticket_type, quantity) do
-              {:ok, _} ->
-                # Create individual ticket records
-                for _ <- 1..quantity do
-                  %Ticket{}
-                  |> Ticket.create_changeset(%{})
-                  |> Ecto.Changeset.put_assoc(:order, order)
-                  |> Ecto.Changeset.put_assoc(:ticket_type, ticket_type)
-                  |> Repo.insert!()
-                end
-
-              {:error, changeset} ->
-                Repo.rollback(changeset)
-            end
-          end)
-
-          order
+          create_tickets_for_order(order, ticket_types)
 
         {:error, changeset} ->
           Repo.rollback(changeset)
       end
     end)
+  end
+
+  # Private helper function to create tickets for an order
+  defp create_tickets_for_order(order, ticket_types) do
+    Enum.each(ticket_types, fn {ticket_type, quantity} ->
+      case Events.reserve_tickets(ticket_type, quantity) do
+        {:ok, _} ->
+          create_individual_tickets(order, ticket_type, quantity)
+
+        {:error, changeset} ->
+          Repo.rollback(changeset)
+      end
+    end)
+
+    order
+  end
+
+  # Private helper function to create individual ticket records
+  defp create_individual_tickets(order, ticket_type, quantity) do
+    for _ <- 1..quantity do
+      %Ticket{}
+      |> Ticket.create_changeset(%{})
+      |> Ecto.Changeset.put_assoc(:order, order)
+      |> Ecto.Changeset.put_assoc(:ticket_type, ticket_type)
+      |> Repo.insert!()
+    end
   end
 
   @doc """

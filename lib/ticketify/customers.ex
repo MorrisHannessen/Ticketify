@@ -154,10 +154,11 @@ defmodule Ticketify.Customers do
 
     Customer
     |> where([c], c.tenant_id == ^tenant.id)
-    |> where([c],
+    |> where(
+      [c],
       ilike(c.first_name, ^search_term) or
-      ilike(c.last_name, ^search_term) or
-      ilike(c.email, ^search_term)
+        ilike(c.last_name, ^search_term) or
+        ilike(c.email, ^search_term)
     )
     |> order_by([c], asc: c.first_name, asc: c.last_name)
     |> limit(50)

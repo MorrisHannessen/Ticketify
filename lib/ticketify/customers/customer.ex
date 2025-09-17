@@ -1,4 +1,10 @@
 defmodule Ticketify.Customers.Customer do
+  @moduledoc """
+  Customer schema representing ticket buyers.
+
+  Customers are scoped to tenants and represent the people who
+  purchase tickets for events.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -32,9 +38,12 @@ defmodule Ticketify.Customers.Customer do
 
   defp validate_age(changeset) do
     case get_field(changeset, :date_of_birth) do
-      nil -> changeset
+      nil ->
+        changeset
+
       date_of_birth ->
         age = Date.diff(Date.utc_today(), date_of_birth) / 365.25
+
         if age >= 13 do
           changeset
         else
@@ -54,6 +63,7 @@ defmodule Ticketify.Customers.Customer do
   Returns customer's age
   """
   def age(%__MODULE__{date_of_birth: nil}), do: nil
+
   def age(%__MODULE__{date_of_birth: date_of_birth}) do
     trunc(Date.diff(Date.utc_today(), date_of_birth) / 365.25)
   end

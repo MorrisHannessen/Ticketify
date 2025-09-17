@@ -1,4 +1,10 @@
 defmodule Ticketify.Tickets.Ticket do
+  @moduledoc """
+  Ticket schema representing individual digital tickets.
+
+  Each ticket is associated with an order and contains a unique QR code
+  for validation at event entry points.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -42,7 +48,10 @@ defmodule Ticketify.Tickets.Ticket do
   """
   def scan_changeset(ticket) do
     ticket
-    |> change(status: "used", scanned_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second))
+    |> change(
+      status: "used",
+      scanned_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    )
   end
 
   @doc """
@@ -87,6 +96,7 @@ defmodule Ticketify.Tickets.Ticket do
   def ticket_number(%__MODULE__{id: id}) when is_integer(id) do
     "T#{String.pad_leading(Integer.to_string(id), 8, "0")}"
   end
+
   def ticket_number(_), do: nil
 
   @doc """

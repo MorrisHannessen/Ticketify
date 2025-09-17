@@ -104,7 +104,10 @@
           {Credo.Check.Refactor.ModuleDependencies, []},
           {Credo.Check.Refactor.NegatedIsNil, []},
           {Credo.Check.Refactor.PipeChainStart, []},
-          {Credo.Check.Refactor.VariableRebinding, []}
+          {Credo.Check.Refactor.VariableRebinding, []},
+          # Incompatible with Elixir 1.15+
+          {Credo.Check.Refactor.MapInto, []},
+          {Credo.Check.Warning.LazyLogging, []}
         ]
       }
     }
