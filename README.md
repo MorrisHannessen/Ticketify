@@ -1,104 +1,95 @@
 # 🎫 Ticketify - Festival/Event Ticketing Platform
 
-> **A modern event ticketing platform built with Elixir & Phoenix** 🚀  
-> *Expanding my portfolio with real-world async processing, queue management, and ticket generation*
+> **A professional-grade event ticketing platform built with Elixir & Phoenix** 🚀
 
+[![CI Pipeline](https://github.com/yourusername/ticketify/workflows/Ticketify%20CI/badge.svg)](https://github.com/yourusername/ticketify/actions)
 [![Elixir](https://img.shields.io/badge/Elixir-%234B275F.svg?style=for-the-badge&logo=elixir&logoColor=white)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-%23FD4F00.svg?style=for-the-badge&logo=phoenixframework&logoColor=white)](https://phoenixframework.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org/)
 
----
+## About
+
+Ticketify is a multi-tenant festival ticket selling platform designed for professional event organizers. The application handles the complete ticket sales lifecycle from event creation to ticket delivery, featuring real-time admin dashboards, secure QR code generation, and automated email delivery.
+
+**Key Features:**
+- 🎪 Multi-tenant architecture with complete data isolation per festival organizer
+- 🎟️ Digital ticket generation with secure QR codes for validation  
+- 📧 Automated ticket delivery via email with PDF attachments
+- 📊 Real-time admin dashboards built with Phoenix LiveView
+- 🔒 Comprehensive security with authentication and authorization
+- ⚡ High-performance async processing for ticket generation and email delivery
+- 🐳 Containerized development environment with Docker Compose
 
 ## 📌 Documentation
 
-- [Requirements & Goals](docs/requirements.md)
-- [Tech Stack](docs/tech_stack.md)
-- [Architecture Plan](docs/architecture.md)
-- [MVP Roadmap](docs/roadmap.md)
-
----
-
-## 📁 Project Architecture
-
-```lib/
-├── ticketify/ # Core business logic
-│ ├── events/ # Event management
-│ ├── tickets/ # Ticket operations
-│ ├── users/ # User management
-│ └── workers/ # Oban background jobs
-├── ticketify_web/ # Web interface
-│ ├── live/ # LiveView modules
-│ ├── controllers/ # HTTP controllers
-│ └── components/ # Reusable UI components
-└── ticketify.ex # Application entry point```
+- [Tech Stack Details](docs/tech_stack.md)
+- [Database Schema](docs/database_schema.md) 
+- [Architecture Overview](docs/architecture.md)
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Elixir 1.14+
-- Phoenix 1.7+
-- PostgreSQL 14+
-- Node.js 18+ (for assets)
+- Elixir ~> 1.15
+- Phoenix ~> 1.8
+- PostgreSQL 15
+- Docker & Docker Compose (recommended)
 
-### Installation
+### Development Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/ticketify.git
 cd ticketify
 
-# Install dependencies
+# Start with Docker (recommended)
+docker-compose up
+
+# Or run locally
 mix setup
-
-# Create and migrate database
-mix ecto.setup
-
-# Start the Phoenix server
 mix phx.server
+```
 
-Visit localhost:4000
- to see the application! 🎉
+Visit [localhost:4000](http://localhost:4000) to see the application! 🎉
 
-## 🎯 Why This Project?
+### Quality Assurance
 
-This project showcases Elixir’s strengths:
-- ⚡ Concurrent processing (multiple simultaneous ticket purchases)
-- 📬 Async event-driven jobs (emails, QR codes, PDFs)
-- 📊 Real-time updates with Phoenix LiveView
-- 🛠️ Production-ready architecture with error handling & monitoring
-- 🎟️ Complex business logic (inventory, stages, capacity)
+Run the complete CI pipeline locally before committing:
 
-## 📚 Learning Resources
+```bash
+# Linux/Mac/WSL
+./bin/pre-commit.sh
 
-- Phoenix Framework Guide
-- Elixir School
-- Oban Documentation
-- LiveView Documentation
+# PowerShell
+./bin/pre-commit.ps1
 
-Built with ❤️ and ☕ using Elixir & Phoenix
+# Windows Command Prompt
+./bin/pre-commit.bat
 
----
+# Or use mix aliases
+mix quality              # All quality checks
+mix quality.ci           # Quality checks + tests
+```
 
-### 📄 `docs/requirements.md`
-```markdown
-# 📌 Requirements & Goals
+## 🔧 Built With Modern Tools
 
-## Users
-- **Customers**: browse events, buy tickets, receive QR codes via email.
-- **Admins**: create events, configure ticket pricing, track sales.
+This project demonstrates professional Elixir development practices:
 
-## MVP Features
-- Event creation with ticket capacity & pricing stages.
-- Customers can purchase tickets online.
-- QR codes generated per ticket.
-- Tickets emailed with secure link.
-- Admin dashboard with sales overview.
+- **🏗️ Multi-tenant Architecture**: Complete data isolation per organization
+- **⚡ Concurrent Processing**: Handle multiple simultaneous ticket purchases
+- **📬 Background Jobs**: Async email delivery, QR generation, PDF creation  
+- **📊 Real-time Dashboards**: Phoenix LiveView for live admin interfaces
+- **🔒 Security First**: Comprehensive authentication, authorization, and security scanning
+- **🚀 CI/CD Pipeline**: Automated testing, linting, security analysis, and deployment validation
+- **🐳 Containerized**: Docker development environment with hot reloading
 
-## Future Enhancements
-- Payment integration (Stripe/Mollie).
-- Refunds & transfers.
-- Waitlist support.
-- Multi-tenant support for multiple organizers.
-- Mobile ticket scanning.
+## 🏆 Code Quality
+
+- **Static Analysis**: Credo for code consistency and best practices
+- **Type Safety**: Dialyzer for catching type errors and dead code
+- **Security**: Sobelow security analysis for Phoenix applications  
+- **Testing**: Comprehensive test suite with coverage reporting
+- **Documentation**: Generated with ExDoc for all public APIs
+
+Built with ❤️ using Elixir & Phoenix
