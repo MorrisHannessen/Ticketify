@@ -1,0 +1,151 @@
+# Ticketify - Festival Ticket Selling Platform
+
+## Project Overview
+This is a professional-grade web application for selling festival tickets, built with Elixir/Phoenix. The application handles ticket sales, QR code generation, email delivery, and admin management for festival organizers.
+
+## Development Environment
+- **Language**: Elixir ~> 1.15
+- **Framework**: Phoenix ~> 1.8.1 with LiveView
+- **Database**: PostgreSQL 15
+- **Containerization**: Docker + Docker Compose for local development
+- **Hot Reloading**: Enabled via Phoenix LiveReload and volume mounts
+
+## Architecture & Tech Stack
+- **Backend**: Phoenix web framework with Ecto for database operations
+- **Frontend**: Phoenix LiveView for real-time admin dashboards, TailwindCSS + DaisyUI for styling
+- **Database**: PostgreSQL with strong relational model for transactions
+- **Background Jobs**: Oban for async processing (emails, QR generation, PDFs)
+- **Authentication**: Pow/phx.gen.auth for user management
+- **Email**: Swoosh with SMTP for transactional notifications
+- **QR Codes**: `qr_code` library for ticket validation
+- **PDF Generation**: `pdf_generator` for ticket files
+- **Assets**: ESBuild for JS, TailwindCSS for styles, HeroIcons for icons
+
+## Development Workflow
+1. **Local Development**: Use `docker-compose up` to start the full stack
+2. **Hot Reloading**: Code changes automatically reload in the containerized environment
+3. **Database**: Migrations run automatically on container startup
+4. **Asset Pipeline**: TailwindCSS and ESBuild watch for changes
+
+## Project Structure
+```
+lib/
+├── ticketify/           # Core business logic contexts
+│   ├── tenants/         # Multi-tenant organization management
+│   ├── users/           # Admin/manager accounts per tenant
+│   ├── customers/       # Ticket buyers per tenant
+│   ├── events/          # Event details, ticket stages, capacity
+│   ├── orders/          # Checkout process, payments (future)
+│   ├── tickets/         # QR generation, delivery
+│   └── workers/         # Background jobs (email, PDF)
+└── ticketify_web/       # Web interface
+    ├── controllers/     # HTTP request handlers
+    ├── live/           # LiveView modules for real-time features
+    ├── components/     # Reusable UI components
+    └── templates/      # HTML templates
+```
+
+## Database Schema
+**📋 Complete database schema documentation**: See `docs/database_schema.md`
+- Multi-tenant architecture with complete data isolation
+- Entity relationships and constraints
+- Business rules and data flow examples
+- **CRITICAL**: Always update this file when making database changes
+
+## Code Quality Guidelines
+- **Follow Phoenix conventions**: Use contexts for business logic separation
+- **Elixir best practices**: Pattern matching, pipe operator, immutable data
+- **Error handling**: Use `{:ok, result}` and `{:error, reason}` tuples
+- **Testing**: Write comprehensive tests for all business logic
+- **Documentation**: Use `@doc` and `@moduledoc` for all public functions
+- **Code formatting**: Use `mix format` consistently
+
+## Database Guidelines
+- **Migrations**: Always use reversible migrations
+- **Constraints**: Use database constraints for data integrity
+- **Indexes**: Add appropriate indexes for performance
+- **Transactions**: Use Ecto.Multi for complex operations
+
+## LiveView Guidelines
+- **State management**: Keep assigns minimal and normalized
+- **Event handling**: Use descriptive event names
+- **Real-time updates**: Use PubSub for cross-process communication
+- **Performance**: Use temporary assigns for large data sets
+
+## Security Considerations
+- **Input validation**: Validate all user inputs with changesets
+- **CSRF protection**: Enabled by default in Phoenix
+- **SQL injection**: Use Ecto parameterized queries
+- **Authentication**: Implement proper session management
+- **Authorization**: Check permissions in controllers and LiveViews
+
+## Performance Guidelines
+- **Database queries**: Use preloading to avoid N+1 queries
+- **Caching**: Implement appropriate caching strategies
+- **Background jobs**: Use Oban for heavy operations
+- **Asset optimization**: Minify and compress assets for production
+
+## Development Commands
+```bash
+# Start development environment
+docker-compose up
+
+# Run in existing container
+docker-compose exec web mix <command>
+
+# Database operations
+docker-compose exec web mix ecto.migrate
+docker-compose exec web mix ecto.reset
+
+# Testing
+docker-compose exec web mix test
+
+# Code formatting
+docker-compose exec web mix format
+```
+
+## Common Patterns
+- **Contexts**: Group related functionality (Users, Events, Orders, Tickets)
+- **Changesets**: Use for data validation and casting
+- **GenServers**: For stateful processes and background tasks
+- **Supervisors**: Ensure fault tolerance and process management
+- **PubSub**: For real-time updates across the application
+
+## Business Domain
+- **Multi-Tenancy**: Festival organizers (tenants) with complete data isolation
+- **Events**: Festivals with multiple ticket types and capacity limits
+- **Tickets**: Digital tickets with QR codes for validation
+- **Orders**: Purchase transactions with customer details
+- **Users**: Admin/manager accounts per tenant (NOT ticket buyers)
+- **Customers**: Ticket buyers scoped to each tenant
+- **Background Processing**: Email delivery, PDF generation, QR code creation
+
+## Future Considerations
+- **Payment Integration**: Stripe/Mollie for payment processing
+- **Subdomain Routing**: Tenant resolution from subdomain
+- **Mobile API**: REST API for mobile applications
+- **Analytics**: Real-time dashboards and reporting per tenant
+- **Scaling**: Prepare for high-traffic ticket sales
+
+## AI Assistant Guidelines
+When working on this codebase:
+1. **Follow Elixir/Phoenix conventions** and idiomatic patterns
+2. **Use contexts** to organize business logic properly
+3. **ALWAYS scope queries to tenants** - never allow cross-tenant data access
+4. **Update `docs/database_schema.md`** whenever database structure changes
+5. **Write tests** for new functionality
+6. **Consider the containerized development environment** when suggesting changes
+7. **Maintain code quality** and follow the established patterns
+8. **Document changes** appropriately
+9. **Consider performance implications** of database queries and LiveView updates
+10. **Ensure security** best practices are followed
+11. **Use the existing tech stack** unless there's a compelling reason to change
+12. **Think about the multi-tenant festival ticket selling domain** when making design decisions
+
+## Database Change Protocol
+**🚨 MANDATORY**: When making ANY database changes:
+1. Create/update migrations
+2. Update corresponding schema files
+3. Update context modules for tenant scoping
+4. **Update `docs/database_schema.md`** with new structure
+5. Test tenant isolation is maintained

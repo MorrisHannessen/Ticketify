@@ -58,7 +58,8 @@ defmodule Ticketify.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.4"},
       {:dns_cluster, "~> 0.1.3"},
-      {:bandit, "~> 1.8"}
+      {:bandit, "~> 1.8"},
+      {:bcrypt_elixir, "~> 3.0"}
     ]
   end
 
