@@ -59,6 +59,9 @@ lib/
 - **Testing**: Write comprehensive tests for all business logic
 - **Documentation**: Use `@doc` and `@moduledoc` for all public functions
 - **Code formatting**: Use `mix format` consistently
+- **Static analysis**: Code must pass Credo and Dialyzer checks
+- **Security**: Run Sobelow security analysis before commits
+- **Quality gates**: All CI checks must pass before merging
 
 ## Database Guidelines
 - **Migrations**: Always use reversible migrations
@@ -102,6 +105,21 @@ docker-compose exec web mix test
 
 # Code formatting
 docker-compose exec web mix format
+
+# Quality checks (local CI)
+./pre-commit.sh              # Linux/Mac/WSL
+./pre-commit.ps1             # PowerShell
+./pre-commit.bat             # Windows Command Prompt
+
+# Individual quality checks
+mix quality                  # Run all quality checks (no tests)
+mix quality.ci               # Run all quality checks + tests
+mix quality.fix              # Auto-fix formatting and deps
+
+# Static analysis
+mix credo --strict           # Code quality analysis
+mix dialyzer                 # Type analysis
+mix sobelow                  # Security analysis
 ```
 
 ## Common Patterns
@@ -119,6 +137,27 @@ docker-compose exec web mix format
 - **Users**: Admin/manager accounts per tenant (NOT ticket buyers)
 - **Customers**: Ticket buyers scoped to each tenant
 - **Background Processing**: Email delivery, PDF generation, QR code creation
+
+## CI/CD Pipeline
+- **Local Pre-commit**: Run `./pre-commit.sh` (Linux/Mac) or `./pre-commit.ps1` (PowerShell) before commits
+- **GitHub Actions**: Automated CI pipeline runs on push/PR to main/develop branches
+- **Quality Gates**: Code formatting, unused deps, compilation warnings, Credo, Sobelow, Dialyzer, tests
+- **Security Scanning**: Dependency audit and Sobelow security analysis
+- **Docker Build**: Validates containerized deployment
+- **Branch Protection**: All CI checks must pass before merging
+
+### CI Pipeline Stages
+1. **Quality Checks**: Formatting, linting, static analysis, security scan
+2. **Test Suite**: Unit tests with database setup
+3. **Docker Build**: Validate containerization
+4. **Security Audit**: Dependency and code security scanning
+
+### Tools Used
+- **Credo**: Static code analysis and style consistency
+- **Dialyzer**: Static type analysis and bug detection
+- **Sobelow**: Security-focused static analysis for Phoenix
+- **ExDoc**: Documentation generation
+- **mix format**: Consistent code formatting
 
 ## Future Considerations
 - **Payment Integration**: Stripe/Mollie for payment processing

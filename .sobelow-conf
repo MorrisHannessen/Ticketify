@@ -1,0 +1,38 @@
+# Sobelow configuration file
+# https://sobelow.io/
+
+# Security checks to run
+[
+  "Config.HTTPS",
+  "Config.CSP",
+  "Config.Secrets",
+  "XSS.Raw",
+  "XSS.SendResp",
+  "SQL.Query",
+  "SQL.Stream",
+  "CI.System",
+  "RCE.CodeModule",
+  "Traversal.FileModule",
+  "Traversal.SendDownload",
+  "Misc.BinToTerm",
+  "Vuln"
+]
+
+# Files and directories to skip
+skip_files = ["priv/static"]
+
+# Directories to skip entirely
+skip_dirs = ["deps", "_build", "node_modules"]
+
+# Confidence levels: high, medium, low
+# Only report issues with confidence level of medium or higher
+confidence = "medium"
+
+# Exit with non-zero status if issues found
+exit_on_warn = true
+
+# Output format: txt, json, compact, sarif
+format = "txt"
+
+# Verbose output
+verbose = false
