@@ -6,6 +6,7 @@ defmodule Ticketify.Customers.Customer do
   purchase tickets for events.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   schema "customers" do
@@ -20,7 +21,8 @@ defmodule Ticketify.Customers.Customer do
     belongs_to :tenant, Ticketify.Tenants.Tenant
     has_many :orders, Ticketify.Orders.Order
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

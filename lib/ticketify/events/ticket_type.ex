@@ -6,6 +6,7 @@ defmodule Ticketify.Events.TicketType do
   capacities, and availability periods.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   schema "ticket_types" do
@@ -19,7 +20,8 @@ defmodule Ticketify.Events.TicketType do
     belongs_to :event, Ticketify.Events.Event
     has_many :tickets, Ticketify.Tickets.Ticket, on_delete: :delete_all
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

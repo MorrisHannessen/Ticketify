@@ -6,6 +6,7 @@ defmodule Ticketify.Events.Event do
   and scheduling information.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   @statuses ~w(draft published active completed cancelled)
@@ -26,7 +27,8 @@ defmodule Ticketify.Events.Event do
     belongs_to :tenant, Ticketify.Tenants.Tenant
     has_many :ticket_types, Ticketify.Events.TicketType, on_delete: :delete_all
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

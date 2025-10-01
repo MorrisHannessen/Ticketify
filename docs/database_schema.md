@@ -28,8 +28,9 @@ erDiagram
         string logo_url
         string status "active, inactive, suspended"
         jsonb settings "Configuration settings"
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     USERS {
@@ -42,8 +43,9 @@ erDiagram
         string role "admin, manager"
         string password_hash
         timestamp confirmed_at
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     CUSTOMERS {
@@ -55,8 +57,9 @@ erDiagram
         string phone
         date date_of_birth
         jsonb preferences "Customer preferences"
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     EVENTS {
@@ -72,8 +75,9 @@ erDiagram
         string status "draft, published, active, completed, cancelled"
         string image_url
         string slug "Unique per tenant"
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     TICKET_TYPES {
@@ -84,8 +88,9 @@ erDiagram
         decimal price
         integer capacity
         integer available "Remaining tickets"
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     ORDERS {
@@ -97,8 +102,9 @@ erDiagram
         string customer_first_name
         string customer_last_name
         string customer_phone
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
     
     TICKETS {
@@ -108,8 +114,9 @@ erDiagram
         string qr_code UK "Unique QR code"
         string status "active, used, cancelled, refunded"
         timestamp scanned_at
-        timestamp inserted_at
+        timestamp created_at
         timestamp updated_at
+        timestamp deleted_at "Soft delete"
     }
 ```
 
@@ -133,8 +140,9 @@ erDiagram
 | logo_url | varchar(255) | | URL to organization logo |
 | status | varchar(255) | NOT NULL, DEFAULT 'active' | active, inactive, suspended |
 | settings | jsonb | DEFAULT '{}' | Tenant configuration settings |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `users`
 **Purpose**: Admin and manager accounts for each tenant
@@ -154,8 +162,9 @@ erDiagram
 | role | varchar(255) | NOT NULL, DEFAULT 'admin' | admin, manager |
 | password_hash | varchar(255) | | Bcrypt hashed password |
 | confirmed_at | timestamp | | Email confirmation timestamp |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `customers`
 **Purpose**: People who buy tickets from tenants
@@ -174,8 +183,9 @@ erDiagram
 | phone | varchar(255) | | Phone number |
 | date_of_birth | date | | Date of birth (for age validation) |
 | preferences | jsonb | DEFAULT '{}' | Customer preferences |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `events`
 **Purpose**: Festivals and concerts organized by tenants
@@ -198,8 +208,9 @@ erDiagram
 | status | varchar(255) | NOT NULL, DEFAULT 'draft' | draft, published, active, completed, cancelled |
 | image_url | varchar(255) | | Event image URL |
 | slug | varchar(255) | | URL-friendly event identifier |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `ticket_types`
 **Purpose**: Different categories of tickets for each event
@@ -216,8 +227,9 @@ erDiagram
 | price | decimal(10,2) | NOT NULL | Ticket price |
 | capacity | integer | NOT NULL | Total tickets of this type |
 | available | integer | NOT NULL | Remaining available tickets |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `orders`
 **Purpose**: Purchase transactions made by customers
@@ -235,8 +247,9 @@ erDiagram
 | customer_first_name | varchar(255) | NOT NULL | Denormalized customer first name |
 | customer_last_name | varchar(255) | NOT NULL | Denormalized customer last name |
 | customer_phone | varchar(255) | | Denormalized customer phone |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ### `tickets`
 **Purpose**: Individual tickets with QR codes
@@ -253,8 +266,9 @@ erDiagram
 | qr_code | varchar(255) | NOT NULL, UNIQUE | Unique QR code for scanning |
 | status | varchar(255) | NOT NULL, DEFAULT 'active' | active, used, cancelled, refunded |
 | scanned_at | timestamp | | When ticket was scanned/used |
-| inserted_at | timestamp | NOT NULL | Record creation time |
+| created_at | timestamp | NOT NULL | Record creation time |
 | updated_at | timestamp | NOT NULL | Record last update time |
+| deleted_at | timestamp | | Soft delete timestamp (NULL if active) |
 
 ## 🔐 Multi-Tenant Data Isolation
 

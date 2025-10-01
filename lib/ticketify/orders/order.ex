@@ -6,6 +6,7 @@ defmodule Ticketify.Orders.Order do
   multiple tickets for a specific event.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   @statuses ~w(pending confirmed paid cancelled refunded)
@@ -22,7 +23,8 @@ defmodule Ticketify.Orders.Order do
     belongs_to :customer, Ticketify.Customers.Customer
     has_many :tickets, Ticketify.Tickets.Ticket, on_delete: :delete_all
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

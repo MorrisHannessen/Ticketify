@@ -6,6 +6,7 @@ defmodule Ticketify.Users.User do
   events and ticket sales for a specific organization.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   @roles ~w(admin manager)
@@ -22,7 +23,8 @@ defmodule Ticketify.Users.User do
     # Relationships
     belongs_to :tenant, Ticketify.Tenants.Tenant
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

@@ -6,6 +6,7 @@ defmodule Ticketify.Tickets.Ticket do
   for validation at event entry points.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   @statuses ~w(active used cancelled refunded)
@@ -19,7 +20,8 @@ defmodule Ticketify.Tickets.Ticket do
     belongs_to :order, Ticketify.Orders.Order
     belongs_to :ticket_type, Ticketify.Events.TicketType
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false

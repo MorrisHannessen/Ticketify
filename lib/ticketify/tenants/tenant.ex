@@ -6,6 +6,7 @@ defmodule Ticketify.Tenants.Tenant do
   complete data isolation and their own subdomain.
   """
   use Ecto.Schema
+  use Ticketify.TrackedObject
   import Ecto.Changeset
 
   @statuses ~w(active inactive suspended)
@@ -26,7 +27,8 @@ defmodule Ticketify.Tenants.Tenant do
     has_many :customers, Ticketify.Customers.Customer
     has_many :events, Ticketify.Events.Event
 
-    timestamps(type: :utc_datetime)
+    # Tracked object fields (created_at, updated_at, deleted_at)
+    tracked_timestamps()
   end
 
   @doc false
