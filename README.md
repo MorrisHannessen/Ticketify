@@ -39,10 +39,6 @@ Ticketify is a multi-tenant festival ticket selling platform designed for profes
 ### Development Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/ticketify.git
-cd ticketify
-
 # Start with Docker (recommended)
 docker-compose up
 
